@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +57,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun GoogleSheetsScreenImpl() {
+fun GoogleSheetsScreenImpl(modifier: Modifier = Modifier) {
     val viewModel: GoogleSheetsViewModel = screenScopedViewModel()
     val state = viewModel.uiState()
 
@@ -76,16 +77,17 @@ fun GoogleSheetsScreenImpl() {
         consentLauncher.launch(IntentSenderRequest.Builder(pendingIntent.intentSender).build())
     }
 
-    state.pickerHtml?.let { html ->
-        GooglePickerDialog(
-            html = html,
-            onPick = { id, name -> viewModel.onEvent(GoogleSheetsEvent.SheetPicked(id, name)) },
-            onCancel = { viewModel.onEvent(GoogleSheetsEvent.PickerCancelled) },
-            onError = { viewModel.onEvent(GoogleSheetsEvent.PickerFailed(it)) },
-        )
+    Box(modifier = modifier) {
+        GoogleSheetsUi(state = state, onEvent = viewModel::onEvent)
+        state.pickerHtml?.let { html ->
+            GooglePickerDialog(
+                html = html,
+                onPick = { id, name -> viewModel.onEvent(GoogleSheetsEvent.SheetPicked(id, name)) },
+                onCancel = { viewModel.onEvent(GoogleSheetsEvent.PickerCancelled) },
+                onError = { viewModel.onEvent(GoogleSheetsEvent.PickerFailed(it)) },
+            )
+        }
     }
-
-    GoogleSheetsUi(state = state, onEvent = viewModel::onEvent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

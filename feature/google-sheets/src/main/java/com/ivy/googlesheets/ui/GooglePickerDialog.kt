@@ -19,11 +19,12 @@ import com.ivy.googlesheets.picker.GooglePickerPage
  */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun GooglePickerDialog(
+internal fun GooglePickerDialog(
     html: String,
     onPick: (id: String, name: String) -> Unit,
     onCancel: () -> Unit,
     onError: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val picked = rememberUpdatedState(onPick)
     val cancel = rememberUpdatedState(onCancel)
@@ -33,7 +34,7 @@ fun GooglePickerDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         AndroidView(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             factory = { context ->
                 WebView(context).apply {
                     settings.javaScriptEnabled = true
