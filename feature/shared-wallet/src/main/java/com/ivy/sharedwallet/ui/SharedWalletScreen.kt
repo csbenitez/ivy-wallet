@@ -55,11 +55,13 @@ import com.ivy.sharedwallet.data.SharedWorkspacesManager
 
 @Composable
 fun SharedWalletScreenImpl(
-    viewModel: SharedWalletViewModel = screenScopedViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: SharedWalletViewModel = screenScopedViewModel(),
 ) {
     SharedWalletUi(
         uiState = viewModel.uiState(),
         onEvent = viewModel::onEvent,
+        modifier = modifier,
     )
 }
 
@@ -82,6 +84,7 @@ private sealed interface DialogState {
 private fun SharedWalletUi(
     uiState: SharedWalletUiState,
     onEvent: (SharedWalletUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     var dialog by remember { mutableStateOf<DialogState?>(null) }
@@ -117,6 +120,7 @@ private fun SharedWalletUi(
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(R.string.sw_title)) },
@@ -165,101 +169,101 @@ private fun SharedWalletUi(
                 }
             }
         }
-    }
 
-    val dismiss = { dialog = null }
-    when (val current = dialog) {
-        null -> Unit
-        DialogState.Create -> TextInputDialog(
-            title = stringResource(R.string.sw_new_workspace),
-            label = stringResource(R.string.sw_workspace_name),
-            initial = "",
-            confirm = stringResource(R.string.sw_create),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                onEvent(SharedWalletUiEvent.Create(it))
-            },
-        )
+        val dismiss = { dialog = null }
+        when (val current = dialog) {
+            null -> Unit
+            DialogState.Create -> TextInputDialog(
+                title = stringResource(R.string.sw_new_workspace),
+                label = stringResource(R.string.sw_workspace_name),
+                initial = "",
+                confirm = stringResource(R.string.sw_create),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    onEvent(SharedWalletUiEvent.Create(it))
+                },
+            )
 
-        is DialogState.Rename -> TextInputDialog(
-            title = stringResource(R.string.sw_rename),
-            label = stringResource(R.string.sw_workspace_name),
-            initial = current.item.name,
-            confirm = stringResource(R.string.sw_ok),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                onEvent(SharedWalletUiEvent.Rename(current.item.id, it))
-            },
-        )
+            is DialogState.Rename -> TextInputDialog(
+                title = stringResource(R.string.sw_rename),
+                label = stringResource(R.string.sw_workspace_name),
+                initial = current.item.name,
+                confirm = stringResource(R.string.sw_ok),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    onEvent(SharedWalletUiEvent.Rename(current.item.id, it))
+                },
+            )
 
-        is DialogState.ShareName -> TextInputDialog(
-            title = stringResource(R.string.sw_member_name_title),
-            label = stringResource(R.string.sw_member_name_hint),
-            initial = uiState.memberName,
-            confirm = stringResource(R.string.sw_continue),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                pendingMemberName = it
-                pendingShareId = current.item.id
-                createFile.launch("${current.item.name}.ivyshared.json")
-            },
-        )
+            is DialogState.ShareName -> TextInputDialog(
+                title = stringResource(R.string.sw_member_name_title),
+                label = stringResource(R.string.sw_member_name_hint),
+                initial = uiState.memberName,
+                confirm = stringResource(R.string.sw_continue),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    pendingMemberName = it
+                    pendingShareId = current.item.id
+                    createFile.launch("${current.item.name}.ivyshared.json")
+                },
+            )
 
-        DialogState.JoinName -> TextInputDialog(
-            title = stringResource(R.string.sw_member_name_title),
-            label = stringResource(R.string.sw_member_name_hint),
-            initial = uiState.memberName,
-            confirm = stringResource(R.string.sw_continue),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                pendingMemberName = it
-                openFile.launch(arrayOf("application/json", "application/octet-stream", "text/plain"))
-            },
-        )
+            DialogState.JoinName -> TextInputDialog(
+                title = stringResource(R.string.sw_member_name_title),
+                label = stringResource(R.string.sw_member_name_hint),
+                initial = uiState.memberName,
+                confirm = stringResource(R.string.sw_continue),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    pendingMemberName = it
+                    openFile.launch(arrayOf("application/json", "application/octet-stream", "text/plain"))
+                },
+            )
 
-        is DialogState.Switch -> ConfirmDialog(
-            title = stringResource(R.string.sw_switch_title, current.item.name),
-            text = stringResource(R.string.sw_switch_text),
-            confirm = stringResource(R.string.sw_open),
-            onDismiss = dismiss,
-            onConfirm = { onEvent(SharedWalletUiEvent.SwitchTo(current.item.id)) },
-        )
+            is DialogState.Switch -> ConfirmDialog(
+                title = stringResource(R.string.sw_switch_title, current.item.name),
+                text = stringResource(R.string.sw_switch_text),
+                confirm = stringResource(R.string.sw_open),
+                onDismiss = dismiss,
+                onConfirm = { onEvent(SharedWalletUiEvent.SwitchTo(current.item.id)) },
+            )
 
-        is DialogState.Delete -> ConfirmDialog(
-            title = stringResource(R.string.sw_delete_title, current.item.name),
-            text = stringResource(R.string.sw_delete_text),
-            confirm = stringResource(R.string.sw_delete),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                onEvent(SharedWalletUiEvent.Delete(current.item.id))
-            },
-        )
+            is DialogState.Delete -> ConfirmDialog(
+                title = stringResource(R.string.sw_delete_title, current.item.name),
+                text = stringResource(R.string.sw_delete_text),
+                confirm = stringResource(R.string.sw_delete),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    onEvent(SharedWalletUiEvent.Delete(current.item.id))
+                },
+            )
 
-        is DialogState.StopSharing -> ConfirmDialog(
-            title = stringResource(R.string.sw_stop_title, current.item.name),
-            text = stringResource(R.string.sw_stop_text),
-            confirm = stringResource(R.string.sw_stop_sharing),
-            onDismiss = dismiss,
-            onConfirm = {
-                dismiss()
-                onEvent(SharedWalletUiEvent.StopSharing(current.item.id))
-            },
-        )
-    }
+            is DialogState.StopSharing -> ConfirmDialog(
+                title = stringResource(R.string.sw_stop_title, current.item.name),
+                text = stringResource(R.string.sw_stop_text),
+                confirm = stringResource(R.string.sw_stop_sharing),
+                onDismiss = dismiss,
+                onConfirm = {
+                    dismiss()
+                    onEvent(SharedWalletUiEvent.StopSharing(current.item.id))
+                },
+            )
+        }
 
-    uiState.joined?.let { joined ->
-        ConfirmDialog(
-            title = stringResource(R.string.sw_joined_title, joined.name),
-            text = stringResource(R.string.sw_joined_text),
-            confirm = stringResource(R.string.sw_open),
-            onDismiss = { onEvent(SharedWalletUiEvent.DismissJoined) },
-            onConfirm = { onEvent(SharedWalletUiEvent.SwitchTo(joined.id)) },
-        )
+        uiState.joined?.let { joined ->
+            ConfirmDialog(
+                title = stringResource(R.string.sw_joined_title, joined.name),
+                text = stringResource(R.string.sw_joined_text),
+                confirm = stringResource(R.string.sw_open),
+                onDismiss = { onEvent(SharedWalletUiEvent.DismissJoined) },
+                onConfirm = { onEvent(SharedWalletUiEvent.SwitchTo(joined.id)) },
+            )
+        }
     }
 }
 
