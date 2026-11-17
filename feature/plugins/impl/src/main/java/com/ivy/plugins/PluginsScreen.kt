@@ -1,5 +1,6 @@
 package com.ivy.plugins
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -113,7 +114,7 @@ private fun PluginCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = categoryLabel(item.metadata.category) + " · " + stringResource(
+                    text = stringResource(categoryLabel(item.metadata.category)) + " · " + stringResource(
                         R.string.plugins_version_author,
                         item.metadata.version,
                         item.metadata.author
@@ -138,11 +139,9 @@ private fun PluginCard(
     }
 }
 
-@Composable
-private fun categoryLabel(category: PluginCategory): String = stringResource(
-    when (category) {
-        PluginCategory.SYNC -> R.string.plugins_category_sync
-        PluginCategory.IMPORT -> R.string.plugins_category_import
-        PluginCategory.OTHER -> R.string.plugins_category_other
-    }
-)
+@StringRes
+private fun categoryLabel(category: PluginCategory): Int = when (category) {
+    PluginCategory.SYNC -> R.string.plugins_category_sync
+    PluginCategory.IMPORT -> R.string.plugins_category_import
+    PluginCategory.OTHER -> R.string.plugins_category_other
+}
