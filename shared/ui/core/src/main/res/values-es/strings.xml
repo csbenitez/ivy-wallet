@@ -238,6 +238,8 @@
     <string name="import_export"><![CDATA[Importación y exportación]]></string>
     <string name="backup_data">Respaldo de datos</string>
     <string name="import_data">Importar datos</string>
+    <string name="google_sheets_sync">Sincronizar con Google Sheets</string>
+    <string name="google_sheets_sync_description">Importa y sincroniza tu hoja de presupuesto</string>
     <string name="app_settings">Ajustes de Aplicación</string>
     <string name="tap_to_switch_theme">Toca para cambiar el tema</string>
     <string name="lock_app">Bloquear la aplicación</string>

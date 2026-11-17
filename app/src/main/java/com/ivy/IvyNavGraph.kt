@@ -12,6 +12,7 @@ import com.ivy.contributors.ContributorsScreenImpl
 import com.ivy.disclaimer.DisclaimerScreenImpl
 import com.ivy.exchangerates.ExchangeRatesScreen
 import com.ivy.features.FeaturesScreenImpl
+import com.ivy.googlesheets.ui.GoogleSheetsScreenImpl
 import com.ivy.importdata.csv.CSVScreen
 import com.ivy.importdata.csvimport.ImportCSVScreen
 import com.ivy.loans.loan.LoansScreen
@@ -28,6 +29,7 @@ import com.ivy.navigation.EditPlannedScreen
 import com.ivy.navigation.EditTransactionScreen
 import com.ivy.navigation.ExchangeRatesScreen
 import com.ivy.navigation.FeaturesScreen
+import com.ivy.navigation.GoogleSheetsScreen
 import com.ivy.navigation.ImportScreen
 import com.ivy.navigation.LoanDetailsScreen
 import com.ivy.navigation.LoansScreen
@@ -88,5 +90,6 @@ fun BoxWithConstraintsScope.IvyNavGraph(screen: Screen?) {
         ReleasesScreen -> ReleasesScreenImpl()
         DisclaimerScreen -> DisclaimerScreenImpl()
         PollScreen -> PollScreen()
+        GoogleSheetsScreen -> GoogleSheetsScreenImpl()
     }
 }
