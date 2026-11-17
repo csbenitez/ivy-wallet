@@ -303,7 +303,8 @@ private fun FieldRow(
     required: Boolean,
 ) {
     val column = state.mapping.columnOf(field)
-    val label = stringResource(fieldLabelRes(field)) + if (required) " (${stringResource(R.string.gs_required)})" else ""
+    val requiredSuffix = if (required) " (${stringResource(R.string.gs_required)})" else ""
+    val label = stringResource(fieldLabelRes(field)) + requiredSuffix
     Column {
         Dropdown(
             label = label,
