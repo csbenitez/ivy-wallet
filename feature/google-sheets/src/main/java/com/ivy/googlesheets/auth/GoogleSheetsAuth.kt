@@ -15,6 +15,10 @@ import javax.inject.Singleton
 /**
  * OAuth for the Google Sheets API via Google Identity Services' AuthorizationClient.
  *
+ * Uses the non-sensitive `drive.file` scope: the app only gets access to the spreadsheets
+ * the user picks in the Google Picker (or files the app creates), so no Google
+ * verification is needed. The Sheets API works on those files as usual.
+ *
  * No client id or secret lives in the app: Google matches the app by package name + signing
  * SHA-1 against an "Android" OAuth client in the developer's Google Cloud project.
  * The first call returns a consent [android.app.PendingIntent] (surfaced as
@@ -28,7 +32,7 @@ class GoogleSheetsAuth @Inject constructor(
 
     private val request: AuthorizationRequest
         get() = AuthorizationRequest.builder()
-            .setRequestedScopes(listOf(Scope(SCOPE_SPREADSHEETS)))
+            .setRequestedScopes(listOf(Scope(SCOPE_DRIVE_FILE)))
             .build()
 
     /** A fresh access token. Play services caches and refreshes it for us. */
@@ -58,6 +62,6 @@ class GoogleSheetsAuth @Inject constructor(
     fun invalidate(token: String) = Unit
 
     companion object {
-        const val SCOPE_SPREADSHEETS = "https://www.googleapis.com/auth/spreadsheets"
+        const val SCOPE_DRIVE_FILE = "https://www.googleapis.com/auth/drive.file"
     }
 }

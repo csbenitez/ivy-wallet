@@ -5,7 +5,7 @@ already track their budget in Sheets and want to move to the mobile app.
 
 ## How it works
 
-1. The user pastes the sheet link, picks a tab and confirms a column mapping
+1. The user chooses their spreadsheet in the Google Picker, picks a tab and confirms a column mapping
    (auto-guessed from Spanish/English headers: date, amount, type, account, category, ...).
 2. **Sheet → Ivy**: rows not synced before are imported through the existing CSV importer
    (`CSVImporterV2`), so accounts/categories are matched or created the same way as a CSV import.
@@ -24,24 +24,44 @@ Not synced yet: edits and deletions (on either side) and automatic background sy
 |---|---|
 | `sync/` | Pure Kotlin, no Android: mapping, normalization, fingerprints, row writer. Unit tested. |
 | `remote/` | `SheetsApi` + REST implementation (Sheets API v4 via Ktor). |
-| `auth/` | OAuth via Google Identity Services `AuthorizationClient`. |
+| `auth/` | OAuth via Google Identity Services `AuthorizationClient`, scope `drive.file`. |
+| `picker/` | Google Picker page (shown in a WebView) used to choose the spreadsheet. |
 | `data/` | DataStore persistence of the link, mapping and sync ledger. |
 | `GoogleSheetsSync` | Single entry point (`preview`, `link`, `sync`, `unlink`), easy to wrap as a sync plugin. |
 | `ui/` | Settings → "Google Sheets sync" screen. |
 
+## Permissions
+
+The app requests only `https://www.googleapis.com/auth/drive.file`, a **non-sensitive** scope:
+it can read and write just the spreadsheets the user chooses in the Google Picker (and files
+the app creates), never the rest of their Drive. No Google app verification is required.
+Because access is granted per file, the sheet must be chosen in the Picker; pasting a link
+to a sheet the app was never given returns "not found".
+
 ## Google Cloud setup (required to run it)
 
-The app ships no client id or secret. Google matches the app by package name + signing SHA-1.
+All steps happen in **one** Google Cloud project, because a file picked in the Picker
+is granted to that project's OAuth clients.
 
-1. In [Google Cloud Console](https://console.cloud.google.com/) create (or pick) a project.
-2. *APIs & Services → Library*: enable **Google Sheets API**.
-3. *APIs & Services → OAuth consent screen*: user type **External**, add the scope
-   `https://www.googleapis.com/auth/spreadsheets`, and while the app is in *Testing*
-   add every Google account that will use it under **Test users**.
-4. *APIs & Services → Credentials → Create credentials → OAuth client ID → Android*, once per build:
+1. In [Google Cloud Console](https://console.cloud.google.com/) create (or pick) a project and note its
+   **project number** (Dashboard → Project info; digits only, not the project id).
+2. *APIs & Services → Library*: enable **Google Sheets API**, **Google Drive API** and **Google Picker API**.
+3. *Google Auth Platform / OAuth consent screen*: user type **External**, app name, support email,
+   and add the scope `https://www.googleapis.com/auth/drive.file`. Publishing the app
+   ("In production") does not need verification for this scope; while in *Testing*, add the
+   Google accounts that will use it as **Test users**.
+4. *Credentials → Create credentials → OAuth client ID → Android*, once per build:
    - debug: package `com.ivy.wallet.debug`, SHA-1 of the repo's `debug.jks`:
      `96:27:30:45:9B:10:6B:8A:A8:FB:22:54:30:DE:B6:A9:7C:55:96:99`
    - release: package `com.ivy.wallet`, SHA-1 of the release keystore (or of the
      Play App Signing key if distributed through Google Play).
+5. *Credentials → Create credentials → API key*. Edit it and under *API restrictions* allow only
+   **Google Picker API** (leave *Application restrictions* as "None": the Picker runs in a WebView).
+6. Give both values to the build, e.g. in `~/.gradle/gradle.properties` (never commit them):
 
-Publishing to everyone requires Google's verification of the (sensitive) `spreadsheets` scope.
+   ```properties
+   ivy.googlePickerApiKey=AIza...
+   ivy.googleCloudProjectNumber=123456789012
+   ```
+
+   or as environment variables `GOOGLE_PICKER_API_KEY` and `GOOGLE_CLOUD_PROJECT_NUMBER` (e.g. CI secrets).

@@ -2,10 +2,7 @@
 <resources>
     <string name="gs_title">Google Sheets sync</string>
     <string name="gs_settings_button">Sync with Google Sheets</string>
-    <string name="gs_intro">Already keep your budget in Google Sheets? Link your sheet: Ivy imports its rows and writes the transactions you add in the app back to the same tab, in your format.</string>
-    <string name="gs_url_label">Google Sheets link</string>
-    <string name="gs_url_hint">https://docs.google.com/spreadsheets/d/…</string>
-    <string name="gs_connect">Connect</string>
+    <string name="gs_intro">Already keep your budget in Google Sheets? Choose your sheet: Ivy imports its rows and writes the transactions you add in the app back to the same tab, in your format.</string>
     <string name="gs_tab">Tab</string>
     <string name="gs_mapping_title">Match your columns</string>
     <string name="gs_mapping_help">We guessed the columns from your headers. Check them before the first sync.</string>
@@ -48,11 +45,14 @@
     <string name="gs_report_failed">Rows that couldn\'t be imported: %1$s</string>
     <string name="gs_report_skipped">%1$d transactions can\'t be written with this sheet\'s format (e.g. transfers or incomes in an expenses-only sheet).</string>
     <string name="gs_how_it_works">Only new rows and transactions are synced. Edits and deletions are not synced yet.</string>
-    <string name="gs_error_invalid_url">That doesn\'t look like a Google Sheets link.</string>
     <string name="gs_error_not_found">Spreadsheet or tab not found.</string>
     <string name="gs_error_permission">Your Google account can\'t access this spreadsheet.</string>
     <string name="gs_error_network">Couldn\'t reach Google. Check your connection.</string>
     <string name="gs_error_consent">Google access wasn\'t granted.</string>
     <string name="gs_error_empty">This tab is empty. The first row must hold the column names.</string>
     <string name="gs_error_unknown">Something went wrong while syncing.</string>
+    <string name="gs_pick_sheet">Choose your sheet in Google Drive</string>
+    <string name="gs_pick_privacy">Ivy only gets access to the spreadsheet you choose, not to the rest of your Drive.</string>
+    <string name="gs_error_picker_not_configured">The Google Picker isn\'t configured in this build (missing API key or project number).</string>
+    <string name="gs_error_picker_failed">Couldn\'t open the Google file picker. Try again.</string>
 </resources>

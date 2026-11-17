@@ -12,7 +12,8 @@ import kotlinx.collections.immutable.persistentListOf
 @Immutable
 data class GoogleSheetsState(
     val step: Step,
-    val urlInput: String,
+    /** The Google Picker page to show, if the user is picking a spreadsheet. */
+    val pickerHtml: String?,
     val loading: Boolean,
     val error: SheetsError?,
     val spreadsheetTitle: String?,
@@ -27,12 +28,12 @@ data class GoogleSheetsState(
     val lastReport: GoogleSheetsSync.Report?,
     val consentRequest: PendingIntent?,
 ) {
-    enum class Step { ENTER_URL, MAPPING, LINKED }
+    enum class Step { PICK_SHEET, MAPPING, LINKED }
 
     companion object {
         val Initial = GoogleSheetsState(
-            step = Step.ENTER_URL,
-            urlInput = "",
+            step = Step.PICK_SHEET,
+            pickerHtml = null,
             loading = true,
             error = null,
             spreadsheetTitle = null,
@@ -51,12 +52,14 @@ data class GoogleSheetsState(
 }
 
 enum class SheetsError {
-    INVALID_URL, NOT_FOUND, PERMISSION_DENIED, NETWORK, CONSENT_DENIED, EMPTY_SHEET, UNKNOWN
+    PICKER_NOT_CONFIGURED, PICKER_FAILED, NOT_FOUND, PERMISSION_DENIED, NETWORK, CONSENT_DENIED, EMPTY_SHEET, UNKNOWN
 }
 
 sealed interface GoogleSheetsEvent {
-    data class UrlChanged(val value: String) : GoogleSheetsEvent
-    data object Connect : GoogleSheetsEvent
+    data object OpenPicker : GoogleSheetsEvent
+    data class SheetPicked(val spreadsheetId: String, val name: String) : GoogleSheetsEvent
+    data object PickerCancelled : GoogleSheetsEvent
+    data class PickerFailed(val message: String) : GoogleSheetsEvent
     data class TabSelected(val tab: String) : GoogleSheetsEvent
     data class FieldMapped(val field: SheetMapping.Field, val column: Int) : GoogleSheetsEvent
     data class TypeModeChanged(val mode: SheetMapping.TypeMode) : GoogleSheetsEvent

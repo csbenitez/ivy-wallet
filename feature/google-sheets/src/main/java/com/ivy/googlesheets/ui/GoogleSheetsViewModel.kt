@@ -9,10 +9,11 @@ import com.ivy.googlesheets.GoogleSheetsSync
 import com.ivy.googlesheets.auth.GoogleSheetsAuth
 import com.ivy.googlesheets.data.GoogleSheetsSyncStore
 import com.ivy.googlesheets.data.SheetLink
+import com.ivy.googlesheets.picker.GooglePickerConfigProvider
+import com.ivy.googlesheets.picker.GooglePickerPage
 import com.ivy.googlesheets.remote.SheetsException
 import com.ivy.googlesheets.sync.SheetMapping
 import com.ivy.googlesheets.sync.SheetTable
-import com.ivy.googlesheets.sync.SpreadsheetRef
 import com.ivy.ui.ComposeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -25,6 +26,7 @@ class GoogleSheetsViewModel @Inject constructor(
     private val sheetsSync: GoogleSheetsSync,
     private val store: GoogleSheetsSyncStore,
     private val auth: GoogleSheetsAuth,
+    private val pickerConfig: GooglePickerConfigProvider,
 ) : ComposeViewModel<GoogleSheetsState, GoogleSheetsEvent>() {
 
     private var state by mutableStateOf(GoogleSheetsState.Initial)
@@ -43,7 +45,6 @@ class GoogleSheetsViewModel @Inject constructor(
                     step = GoogleSheetsState.Step.LINKED,
                     link = link,
                     mapping = link.mapping,
-                    urlInput = SpreadsheetRef.url(link.spreadsheetId),
                     spreadsheetTitle = link.spreadsheetTitle,
                     selectedTab = link.tab,
                     lastSyncEpochMillis = store.ledger().lastSyncEpochMillis,
@@ -60,8 +61,19 @@ class GoogleSheetsViewModel @Inject constructor(
 
     override fun onEvent(event: GoogleSheetsEvent) {
         when (event) {
-            is GoogleSheetsEvent.UrlChanged -> state = state.copy(urlInput = event.value, error = null)
-            GoogleSheetsEvent.Connect -> connect()
+            GoogleSheetsEvent.OpenPicker -> openPicker()
+            is GoogleSheetsEvent.SheetPicked -> {
+                state = state.copy(pickerHtml = null, spreadsheetTitle = event.name)
+                spreadsheetId = event.spreadsheetId
+                loadPreview(tab = null)
+            }
+
+            GoogleSheetsEvent.PickerCancelled -> state = state.copy(pickerHtml = null)
+            is GoogleSheetsEvent.PickerFailed -> {
+                Timber.w("Google Picker failed: ${event.message}")
+                state = state.copy(pickerHtml = null, error = SheetsError.PICKER_FAILED)
+            }
+
             is GoogleSheetsEvent.TabSelected -> loadPreview(event.tab)
             is GoogleSheetsEvent.FieldMapped -> updateMapping { it.with(event.field, event.column) }
             is GoogleSheetsEvent.TypeModeChanged -> updateMapping { it.copy(typeMode = event.mode) }
@@ -93,14 +105,19 @@ class GoogleSheetsViewModel @Inject constructor(
         }
     }
 
-    private fun connect() {
-        val id = SpreadsheetRef.parseId(state.urlInput)
-        if (id == null) {
-            state = state.copy(error = SheetsError.INVALID_URL)
+    private fun openPicker() {
+        val config = pickerConfig.config()
+        if (!config.isConfigured) {
+            state = state.copy(error = SheetsError.PICKER_NOT_CONFIGURED)
             return
         }
-        spreadsheetId = id
-        loadPreview(tab = null)
+        runGuarded {
+            // Also asks for the drive.file consent the first time.
+            val token = auth.accessToken()
+            state = state.copy(
+                pickerHtml = GooglePickerPage.html(config, token, title = PICKER_TITLE)
+            )
+        }
     }
 
     private fun loadPreview(tab: String?) {
@@ -200,5 +217,9 @@ class GoogleSheetsViewModel @Inject constructor(
         is SheetsException.Network -> SheetsError.NETWORK
         is SheetsException.Unauthorized, is SheetsException.NeedsConsent -> SheetsError.CONSENT_DENIED
         is SheetsException.Api -> SheetsError.UNKNOWN
+    }
+
+    companion object {
+        private const val PICKER_TITLE = "Google Sheets"
     }
 }

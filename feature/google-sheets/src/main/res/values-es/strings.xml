@@ -2,10 +2,7 @@
 <resources>
     <string name="gs_title">Sincronizar con Google Sheets</string>
     <string name="gs_settings_button">Sincronizar con Google Sheets</string>
-    <string name="gs_intro">¿Ya llevas tu presupuesto en Google Sheets? Vincula tu hoja: Ivy importa sus filas y escribe en la misma pestaña, con tu formato, los movimientos que añadas en la app.</string>
-    <string name="gs_url_label">Enlace de Google Sheets</string>
-    <string name="gs_url_hint">https://docs.google.com/spreadsheets/d/…</string>
-    <string name="gs_connect">Conectar</string>
+    <string name="gs_intro">¿Ya llevas tu presupuesto en Google Sheets? Elige tu hoja: Ivy importa sus filas y escribe en la misma pestaña, con tu formato, los movimientos que añadas en la app.</string>
     <string name="gs_tab">Pestaña</string>
     <string name="gs_mapping_title">Relaciona tus columnas</string>
     <string name="gs_mapping_help">Adivinamos las columnas a partir de tus encabezados. Revísalas antes de la primera sincronización.</string>
@@ -48,11 +45,14 @@
     <string name="gs_report_failed">Filas que no se pudieron importar: %1$s</string>
     <string name="gs_report_skipped">%1$d movimientos no se pueden escribir con el formato de esta hoja (p. ej. transferencias, o ingresos en una hoja solo de gastos).</string>
     <string name="gs_how_it_works">Solo se sincronizan filas y movimientos nuevos. Las ediciones y los borrados aún no se sincronizan.</string>
-    <string name="gs_error_invalid_url">Eso no parece un enlace de Google Sheets.</string>
     <string name="gs_error_not_found">No se encontró la hoja o la pestaña.</string>
     <string name="gs_error_permission">Tu cuenta de Google no tiene acceso a esta hoja.</string>
     <string name="gs_error_network">No se pudo conectar con Google. Revisa tu conexión.</string>
     <string name="gs_error_consent">No se concedió acceso a Google.</string>
     <string name="gs_error_empty">Esta pestaña está vacía. La primera fila debe tener los nombres de las columnas.</string>
     <string name="gs_error_unknown">Algo salió mal al sincronizar.</string>
+    <string name="gs_pick_sheet">Elegir tu hoja en Google Drive</string>
+    <string name="gs_pick_privacy">Ivy solo obtiene acceso a la hoja que elijas, no al resto de tu Drive.</string>
+    <string name="gs_error_picker_not_configured">El selector de Google no está configurado en esta compilación (falta la API key o el número de proyecto).</string>
+    <string name="gs_error_picker_failed">No se pudo abrir el selector de archivos de Google. Inténtalo de nuevo.</string>
 </resources>

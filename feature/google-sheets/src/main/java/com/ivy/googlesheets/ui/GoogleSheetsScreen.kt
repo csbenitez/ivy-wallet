@@ -74,6 +74,15 @@ fun GoogleSheetsScreenImpl() {
         consentLauncher.launch(IntentSenderRequest.Builder(pendingIntent.intentSender).build())
     }
 
+    state.pickerHtml?.let { html ->
+        GooglePickerDialog(
+            html = html,
+            onPick = { id, name -> viewModel.onEvent(GoogleSheetsEvent.SheetPicked(id, name)) },
+            onCancel = { viewModel.onEvent(GoogleSheetsEvent.PickerCancelled) },
+            onError = { viewModel.onEvent(GoogleSheetsEvent.PickerFailed(it)) },
+        )
+    }
+
     GoogleSheetsUi(state = state, onEvent = viewModel::onEvent)
 }
 
@@ -106,7 +115,7 @@ private fun GoogleSheetsUi(
             }
             state.error?.let { error -> item { ErrorCard(error) { onEvent(GoogleSheetsEvent.DismissError) } } }
             when (state.step) {
-                GoogleSheetsState.Step.ENTER_URL -> enterUrl(state, onEvent)
+                GoogleSheetsState.Step.PICK_SHEET -> pickSheet(state, onEvent)
                 GoogleSheetsState.Step.MAPPING -> mapping(state, onEvent)
                 GoogleSheetsState.Step.LINKED -> linked(state, onEvent)
             }
@@ -115,24 +124,17 @@ private fun GoogleSheetsUi(
     }
 }
 
-private fun LazyListScope.enterUrl(state: GoogleSheetsState, onEvent: (GoogleSheetsEvent) -> Unit) {
+private fun LazyListScope.pickSheet(state: GoogleSheetsState, onEvent: (GoogleSheetsEvent) -> Unit) {
     item { Text(stringResource(R.string.gs_intro)) }
-    item {
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = state.urlInput,
-            onValueChange = { onEvent(GoogleSheetsEvent.UrlChanged(it)) },
-            label = { Text(stringResource(R.string.gs_url_label)) },
-            placeholder = { Text(stringResource(R.string.gs_url_hint)) },
-            singleLine = true,
-        )
-    }
     item {
         Button(
             modifier = Modifier.fillMaxWidth(),
-            enabled = !state.loading && state.urlInput.isNotBlank(),
-            onClick = { onEvent(GoogleSheetsEvent.Connect) },
-        ) { Text(stringResource(R.string.gs_connect)) }
+            enabled = !state.loading,
+            onClick = { onEvent(GoogleSheetsEvent.OpenPicker) },
+        ) { Text(stringResource(R.string.gs_pick_sheet)) }
+    }
+    item {
+        Text(stringResource(R.string.gs_pick_privacy), style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -439,7 +441,8 @@ private fun Keywords(mapping: SheetMapping, onEvent: (GoogleSheetsEvent) -> Unit
 private fun ErrorCard(error: SheetsError, onDismiss: () -> Unit) {
     val text = stringResource(
         when (error) {
-            SheetsError.INVALID_URL -> R.string.gs_error_invalid_url
+            SheetsError.PICKER_NOT_CONFIGURED -> R.string.gs_error_picker_not_configured
+            SheetsError.PICKER_FAILED -> R.string.gs_error_picker_failed
             SheetsError.NOT_FOUND -> R.string.gs_error_not_found
             SheetsError.PERMISSION_DENIED -> R.string.gs_error_permission
             SheetsError.NETWORK -> R.string.gs_error_network
