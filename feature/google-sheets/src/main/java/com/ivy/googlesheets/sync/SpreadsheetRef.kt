@@ -17,3 +17,7 @@ object SpreadsheetRef {
     fun url(spreadsheetId: String): String =
         "https://docs.google.com/spreadsheets/d/$spreadsheetId/edit"
 }
+
+/** A Google Sheets spreadsheet (Drive file) id. */
+@JvmInline
+value class SpreadsheetId(val value: String)

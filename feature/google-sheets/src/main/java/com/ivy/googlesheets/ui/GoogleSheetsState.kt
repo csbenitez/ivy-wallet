@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 import com.ivy.googlesheets.GoogleSheetsSync
 import com.ivy.googlesheets.data.SheetLink
 import com.ivy.googlesheets.sync.SheetMapping
+import com.ivy.googlesheets.sync.SpreadsheetId
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -57,7 +58,7 @@ enum class SheetsError {
 
 sealed interface GoogleSheetsEvent {
     data object OpenPicker : GoogleSheetsEvent
-    data class SheetPicked(val spreadsheetId: String, val name: String) : GoogleSheetsEvent
+    data class SheetPicked(val spreadsheetId: SpreadsheetId, val name: String) : GoogleSheetsEvent
     data object PickerCancelled : GoogleSheetsEvent
     data class PickerFailed(val message: String) : GoogleSheetsEvent
     data class TabSelected(val tab: String) : GoogleSheetsEvent

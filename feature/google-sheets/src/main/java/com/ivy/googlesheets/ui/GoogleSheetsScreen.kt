@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ivy.googlesheets.R
 import com.ivy.googlesheets.sync.SheetMapping
+import com.ivy.googlesheets.sync.SpreadsheetId
 import com.ivy.googlesheets.sync.SpreadsheetRef
 import com.ivy.googlesheets.sync.columnOf
 import com.ivy.navigation.navigation
@@ -82,7 +83,7 @@ fun GoogleSheetsScreenImpl(modifier: Modifier = Modifier) {
         state.pickerHtml?.let { html ->
             GooglePickerDialog(
                 html = html,
-                onPick = { id, name -> viewModel.onEvent(GoogleSheetsEvent.SheetPicked(id, name)) },
+                onPick = { id, name -> viewModel.onEvent(GoogleSheetsEvent.SheetPicked(SpreadsheetId(id), name)) },
                 onCancel = { viewModel.onEvent(GoogleSheetsEvent.PickerCancelled) },
                 onError = { viewModel.onEvent(GoogleSheetsEvent.PickerFailed(it)) },
             )
