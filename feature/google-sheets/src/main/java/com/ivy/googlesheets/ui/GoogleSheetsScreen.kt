@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import com.ivy.googlesheets.R
 import com.ivy.googlesheets.sync.SheetMapping
 import com.ivy.googlesheets.sync.SpreadsheetRef
+import com.ivy.googlesheets.sync.columnOf
 import com.ivy.navigation.navigation
 import com.ivy.navigation.screenScopedViewModel
 import kotlinx.collections.immutable.ImmutableList

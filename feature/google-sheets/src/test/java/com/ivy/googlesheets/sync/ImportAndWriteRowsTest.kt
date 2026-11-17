@@ -21,7 +21,7 @@ class ImportAndWriteRowsTest {
             listOf("7/3/2026", "Raro", "", "10", "???"),
         ),
     )
-    private val mapping = SheetMapping(
+    private val mapping = SheetMapping.Empty.copy(
         date = 0,
         title = 1,
         category = 2,

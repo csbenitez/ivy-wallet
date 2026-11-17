@@ -12,8 +12,6 @@ data class SheetTable(
 ) {
     val width: Int get() = header.size
 
-    fun sample(size: Int = SAMPLE_SIZE): List<List<String>> = rows.take(size)
-
     companion object {
         const val SAMPLE_SIZE = 5
         private const val ALPHABET_SIZE = 26
@@ -71,3 +69,6 @@ data class SheetTable(
             if (size >= width) this else this + List(width - size) { "" }
     }
 }
+
+/** The first rows of the table, used to preview values and to guess the mapping. */
+fun SheetTable.sample(size: Int = SheetTable.SAMPLE_SIZE): List<List<String>> = rows.take(size)

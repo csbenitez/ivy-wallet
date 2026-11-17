@@ -25,7 +25,7 @@ object GooglePickerPage {
     const val BASE_URL = "https://ivy-wallet.local/"
 
     fun html(config: GooglePickerConfig, accessToken: String, title: String): String {
-        fun js(value: String) = JsonPrimitive(value).toString()
+        fun js(value: String): String = JsonPrimitive(value).toString()
         return """
 <!DOCTYPE html>
 <html>

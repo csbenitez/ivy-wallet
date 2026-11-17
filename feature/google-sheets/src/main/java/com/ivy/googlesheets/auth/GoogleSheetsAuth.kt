@@ -59,7 +59,7 @@ class GoogleSheetsAuth @Inject constructor(
 
     /** Hook for retrying after a 401; tokens are re-requested on every call. */
     @Suppress("UnusedParameter")
-    fun invalidate(token: String) = Unit
+    fun invalidate(token: String): Unit = Unit
 
     companion object {
         const val SCOPE_DRIVE_FILE = "https://www.googleapis.com/auth/drive.file"

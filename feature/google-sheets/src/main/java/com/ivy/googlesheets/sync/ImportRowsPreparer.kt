@@ -125,7 +125,7 @@ object ImportRowsPreparer {
     private fun typeFromText(raw: String, mapping: SheetMapping): String? {
         val value = ColumnAutoMapper.normalize(raw)
         if (value.isBlank()) return null
-        fun matches(keyword: String) =
+        fun matches(keyword: String): Boolean =
             keyword.isNotBlank() && value.contains(ColumnAutoMapper.normalize(keyword))
         return when {
             matches(mapping.transferKeyword) -> TRANSFER
@@ -144,7 +144,12 @@ object ImportRowsPreparer {
 
     private val Unchecked = MappingStatus(sampleValues = emptyList(), success = true)
 
-    private fun <M> column(name: String, index: Int, metadata: M, required: Boolean) = ColumnMapping(
+    private fun <M> column(
+        name: String,
+        index: Int,
+        metadata: M,
+        required: Boolean,
+    ): ColumnMapping<M> = ColumnMapping(
         ivyColumn = name,
         helpInfo = "",
         name = name,

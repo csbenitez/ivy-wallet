@@ -81,7 +81,7 @@ class GoogleSheetsSync @Inject constructor(
         )
     }
 
-    suspend fun link(link: SheetLink) = withContext(dispatchers.io) {
+    suspend fun link(link: SheetLink): Unit = withContext(dispatchers.io) {
         val previous = store.currentLink()
         val existingIds = transactionRepository.findAll().map { it.id.value.toString() }.toSet()
         store.saveLink(link, existingTransactionIds = existingIds)
@@ -103,7 +103,7 @@ class GoogleSheetsSync @Inject constructor(
         }
     }
 
-    suspend fun unlink() = store.unlink()
+    suspend fun unlink(): Unit = store.unlink()
 
     suspend fun sync(): Report = mutex.withLock {
         withContext(dispatchers.io) { syncInternal() }

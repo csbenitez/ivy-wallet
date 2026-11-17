@@ -41,7 +41,7 @@ data class GoogleSheetsState(
             selectedTab = null,
             header = persistentListOf(),
             sampleRows = persistentListOf(),
-            mapping = SheetMapping(),
+            mapping = SheetMapping.Empty,
             missingFields = persistentListOf(),
             link = null,
             lastSyncEpochMillis = null,

@@ -35,7 +35,7 @@ object ColumnAutoMapper {
     fun guess(table: SheetTable): SheetMapping {
         val headers = table.header.map(::normalize)
         val used = mutableSetOf<Int>()
-        var mapping = SheetMapping()
+        var mapping = SheetMapping.Empty
 
         for ((field, keywords) in Keywords) {
             val column = findColumn(headers, keywords, used) ?: continue
