@@ -160,13 +160,16 @@ class RoomLocalLedgerStore(
     }
 
     override fun normalize(record: SyncRecord): SyncRecord {
-        if (record.isTombstone) return record.copy(data = null)
-        val handler = handlersByType[record.type] ?: return record
-        return try {
-            record.copy(data = handler.normalize(json, record.data!!))
-        } catch (e: Exception) {
-            Timber.e(e, "Can't read shared ${record.type} ${record.id}")
-            record
+        val handler = handlersByType[record.type]
+        return when {
+            record.isTombstone -> record.copy(data = null)
+            handler == null -> record
+            else -> try {
+                record.copy(data = handler.normalize(json, record.data!!))
+            } catch (e: Exception) {
+                Timber.e(e, "Can't read shared ${record.type} ${record.id}")
+                record
+            }
         }
     }
 

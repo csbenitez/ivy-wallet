@@ -31,6 +31,7 @@ data class Workspace(
 
 @Keep
 @Serializable
+@Suppress("DataClassDefaultValues")
 data class WorkspacesConfig(
     @SerialName("activeId")
     val activeId: String = WorkspaceRegistry.DEFAULT_WORKSPACE_ID,
@@ -148,7 +149,7 @@ class WorkspaceRegistry @Inject constructor(
         const val DEFAULT_WORKSPACE_ID = "default"
         private const val FILE_NAME = "workspaces.json"
 
-        fun defaultWorkspace() = Workspace(
+        fun defaultWorkspace(): Workspace = Workspace(
             id = DEFAULT_WORKSPACE_ID,
             name = "Personal",
             dbName = IvyRoomDatabase.DB_NAME,

@@ -1,3 +1,5 @@
+@file:Suppress("DataClassTypedIDs")
+
 package com.ivy.sharedwallet.engine
 
 import androidx.annotation.Keep
@@ -23,6 +25,7 @@ data class RecordKey(
  */
 @Keep
 @Serializable
+@Suppress("DataClassDefaultValues")
 data class SyncRecord(
     @SerialName("type")
     val type: String,
@@ -38,19 +41,19 @@ data class SyncRecord(
     val key: RecordKey get() = RecordKey(type, id)
 
     val isTombstone: Boolean get() = data == null || data is JsonNull
-
-    /**
-     * Total order between two versions of the same row, so that every member
-     * picks the same winner no matter in which order they see the versions.
-     */
-    fun winsOver(other: SyncRecord): Boolean = when {
-        updatedAt != other.updatedAt -> updatedAt > other.updatedAt
-        deviceId != other.deviceId -> deviceId > other.deviceId
-        else -> payloadString() > other.payloadString()
-    }
-
-    private fun payloadString(): String = if (isTombstone) "" else data.toString()
 }
+
+/**
+ * Total order between two versions of the same row, so that every member
+ * picks the same winner no matter in which order they see the versions.
+ */
+fun SyncRecord.winsOver(other: SyncRecord): Boolean = when {
+    updatedAt != other.updatedAt -> updatedAt > other.updatedAt
+    deviceId != other.deviceId -> deviceId > other.deviceId
+    else -> payloadString() > other.payloadString()
+}
+
+private fun SyncRecord.payloadString(): String = if (isTombstone) "" else data.toString()
 
 /**
  * A person/device that takes part in a shared ledger.
@@ -71,6 +74,7 @@ data class LedgerMember(
  */
 @Keep
 @Serializable
+@Suppress("DataClassDefaultValues")
 data class SharedLedgerDocument(
     @SerialName("format")
     val format: String = FORMAT,
@@ -97,6 +101,7 @@ data class SharedLedgerDocument(
  */
 @Keep
 @Serializable
+@Suppress("DataClassDefaultValues")
 data class SharingState(
     @SerialName("ledgerId")
     val ledgerId: String,
@@ -137,7 +142,8 @@ data class SyncReport(
 
 sealed class SharedLedgerException(message: String) : Exception(message) {
     class NotShared : SharedLedgerException("This workspace isn't shared")
-    class InvalidDocument(cause: String) : SharedLedgerException("The file isn't an Ivy Wallet shared workspace: $cause")
+    class InvalidDocument(cause: String) :
+        SharedLedgerException("The file isn't an Ivy Wallet shared workspace: $cause")
     class WrongLedger : SharedLedgerException("The file belongs to another shared workspace")
     class AlreadyShared : SharedLedgerException("The file already contains a shared workspace. Join it instead.")
     class UnsupportedVersion(version: Int) :

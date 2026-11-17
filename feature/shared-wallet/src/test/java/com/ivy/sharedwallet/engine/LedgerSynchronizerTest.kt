@@ -31,11 +31,11 @@ class LedgerSynchronizerTest {
             changes.upserts.forEach { rows[it.key] = it.data!! }
         }
 
-        override fun normalize(record: SyncRecord) = record
+        override fun normalize(record: SyncRecord): SyncRecord = record
     }
 
     private class FakeState(var state: SharingState?) : SharingStateStore {
-        override suspend fun load() = state
+        override suspend fun load(): SharingState? = state
         override suspend fun save(state: SharingState) {
             this.state = state
         }
@@ -63,7 +63,7 @@ class LedgerSynchronizerTest {
         )
         val synchronizer = LedgerSynchronizer(file, db, state, json, clock::tick)
 
-        suspend fun sync() = synchronizer.sync()
+        suspend fun sync(): SyncReport = synchronizer.sync()
 
         fun put(id: String, amount: Int, type: String = "transactions") {
             db.rows[RecordKey(type, id)] = trn(amount)

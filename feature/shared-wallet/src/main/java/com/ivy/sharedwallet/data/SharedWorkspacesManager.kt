@@ -71,9 +71,9 @@ class SharedWorkspacesManager @Inject constructor(
         workspace
     }
 
-    fun renameWorkspace(id: String, name: String) = registry.rename(id, name)
+    fun renameWorkspace(id: String, name: String): Unit = registry.rename(id, name)
 
-    suspend fun deleteWorkspace(id: String) = withContext(Dispatchers.IO) {
+    suspend fun deleteWorkspace(id: String): Unit = withContext(Dispatchers.IO) {
         registry.delete(id)
         stateStore(id).clear()
     }
@@ -135,7 +135,7 @@ class SharedWorkspacesManager @Inject constructor(
         workspace
     }
 
-    suspend fun stopSharing(workspaceId: String) = mutex.withLock {
+    suspend fun stopSharing(workspaceId: String): Unit = mutex.withLock {
         stateStore(workspaceId).clear()
     }
 
@@ -204,7 +204,7 @@ class SharedWorkspacesManager @Inject constructor(
     /**
      * A new workspace starts with the settings (base currency, etc.) of the active one.
      */
-    private suspend fun seedSettings(workspace: Workspace) = withContext(Dispatchers.IO) {
+    private suspend fun seedSettings(workspace: Workspace): Unit = withContext(Dispatchers.IO) {
         val settings = activeDb.settingsDao.findAll()
         withDatabase(workspace) { db ->
             if (db.settingsDao.findAll().isEmpty()) {
@@ -214,7 +214,7 @@ class SharedWorkspacesManager @Inject constructor(
         }
     }
 
-    private fun stateStore(workspaceId: String) =
+    private fun stateStore(workspaceId: String): FileSharingStateStore =
         FileSharingStateStore(File(dir, "$workspaceId.json"), json)
 
     @Synchronized

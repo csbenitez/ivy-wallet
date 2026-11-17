@@ -80,7 +80,7 @@ class DocumentFileTransport(
         stream.bufferedReader(Charsets.UTF_8).use { it.readText() }
     }
 
-    override suspend fun write(content: String) = withContext(Dispatchers.IO) {
+    override suspend fun write(content: String): Unit = withContext(Dispatchers.IO) {
         // "wt" truncates the file; some providers only support "w".
         val stream = openForWriting() ?: throw FileNotFoundException(uri.toString())
         stream.bufferedWriter(Charsets.UTF_8).use { it.write(content) }

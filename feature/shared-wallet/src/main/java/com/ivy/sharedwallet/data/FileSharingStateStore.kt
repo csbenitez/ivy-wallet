@@ -27,7 +27,7 @@ class FileSharingStateStore(
 
     override suspend fun load(): SharingState? = withContext(Dispatchers.IO) { loadBlocking() }
 
-    override suspend fun save(state: SharingState) = withContext(Dispatchers.IO) {
+    override suspend fun save(state: SharingState): Unit = withContext(Dispatchers.IO) {
         file.parentFile?.mkdirs()
         val tmp = File(file.parentFile, "${file.name}.tmp")
         tmp.writeText(json.encodeToString(SharingState.serializer(), state))
@@ -37,7 +37,7 @@ class FileSharingStateStore(
         }
     }
 
-    suspend fun clear() = withContext(Dispatchers.IO) {
+    suspend fun clear(): Unit = withContext(Dispatchers.IO) {
         file.delete()
         Unit
     }

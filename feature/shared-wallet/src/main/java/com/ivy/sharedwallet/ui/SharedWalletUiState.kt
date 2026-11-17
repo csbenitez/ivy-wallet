@@ -1,3 +1,5 @@
+@file:Suppress("DataClassTypedIDs")
+
 package com.ivy.sharedwallet.ui
 
 import androidx.compose.runtime.Immutable

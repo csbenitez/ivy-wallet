@@ -122,17 +122,21 @@ class LedgerSynchronizer(
             val content = transport.read()
             if (content.isNullOrBlank()) return null
             val document = try {
-                json.decodeFromString(SharedLedgerDocument.serializer(), content.trim().removePrefix("﻿"))
+                json.decodeFromString(SharedLedgerDocument.serializer(), content.trim().removePrefix("\uFEFF"))
             } catch (e: Exception) {
                 throw SharedLedgerException.InvalidDocument(e.message ?: e.javaClass.simpleName)
             }
+            validate(document)
+            return document
+        }
+
+        private fun validate(document: SharedLedgerDocument) {
             if (document.format != SharedLedgerDocument.FORMAT) {
                 throw SharedLedgerException.InvalidDocument("unknown format '${document.format}'")
             }
             if (document.version > SharedLedgerDocument.VERSION) {
                 throw SharedLedgerException.UnsupportedVersion(document.version)
             }
-            return document
         }
     }
 }
