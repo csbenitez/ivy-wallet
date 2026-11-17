@@ -25,6 +25,7 @@ import com.ivy.data.db.dao.write.WriteSettingsDao
 import com.ivy.data.db.dao.write.WriteTagAssociationDao
 import com.ivy.data.db.dao.write.WriteTagDao
 import com.ivy.data.db.dao.write.WriteTransactionDao
+import com.ivy.data.workspace.WorkspaceRegistry
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,9 +41,11 @@ object RoomDbModule {
     @Singleton
     fun provideIvyRoomDatabase(
         @ApplicationContext appContext: Context,
+        workspaceRegistry: WorkspaceRegistry,
     ): IvyRoomDatabase {
         return IvyRoomDatabase.create(
             applicationContext = appContext,
+            dbName = workspaceRegistry.active().dbName,
         )
     }
 

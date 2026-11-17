@@ -54,6 +54,7 @@ import com.ivy.navigation.FeaturesScreen
 import com.ivy.navigation.ImportScreen
 import com.ivy.navigation.Navigation
 import com.ivy.navigation.ReleasesScreen
+import com.ivy.navigation.SharedWalletScreen
 import com.ivy.navigation.navigation
 import com.ivy.navigation.screenScopedViewModel
 import com.ivy.ui.R
@@ -255,6 +256,16 @@ private fun BoxWithConstraintsScope.UI(
                 iconPadding = 8.dp
             ) {
                 onBackupData()
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            SettingsDefaultButton(
+                icon = R.drawable.ic_custom_family_m,
+                text = stringResource(R.string.workspaces_and_sharing),
+                iconPadding = 8.dp
+            ) {
+                nav.navigateTo(SharedWalletScreen)
             }
 
             Spacer(Modifier.height(12.dp))
