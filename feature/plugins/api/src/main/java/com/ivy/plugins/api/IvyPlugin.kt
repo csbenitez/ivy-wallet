@@ -39,6 +39,8 @@ interface IvyPlugin {
 value class PluginId(val value: String)
 
 @Immutable
+// Already a typed id (value class); the rule only looks at the property name.
+@Suppress("DataClassTypedIDs")
 data class PluginMetadata(
     val id: PluginId,
     val name: String,

@@ -33,6 +33,8 @@ value class RemoteSnapshotId(val value: String)
 /**
  * @param revision changes every time the remote snapshot changes.
  */
+// Already a typed id (value class); the rule only looks at the property name.
+@Suppress("DataClassTypedIDs")
 data class RemoteSnapshot(
     val id: RemoteSnapshotId,
     val revision: String,

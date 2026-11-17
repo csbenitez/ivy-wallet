@@ -31,6 +31,8 @@ data class PluginItemViewState(
 )
 
 sealed interface PluginsUiEvent {
+    // Already a typed id (value class); the rule only looks at the property name.
+    @Suppress("DataClassTypedIDs")
     data class TogglePlugin(val pluginId: PluginId) : PluginsUiEvent
 }
 
