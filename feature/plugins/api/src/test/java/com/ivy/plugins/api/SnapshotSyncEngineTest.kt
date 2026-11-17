@@ -120,8 +120,8 @@ class SnapshotSyncEngineTest {
     }
 
     companion object {
-        private const val PLUGIN_ID = "test"
-        private const val FILE_ID = "file"
+        private val PLUGIN_ID = PluginId("test")
+        private val FILE_ID = RemoteSnapshotId("file")
         private const val LOCAL_JSON = "{\"local\":true}"
         private const val REMOTE_JSON = "{\"remote\":true}"
     }

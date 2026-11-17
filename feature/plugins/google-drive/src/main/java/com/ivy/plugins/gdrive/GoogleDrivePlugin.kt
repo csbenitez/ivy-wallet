@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ivy.plugins.api.IvyPlugin
 import com.ivy.plugins.api.PluginCategory
+import com.ivy.plugins.api.PluginId
 import com.ivy.plugins.api.PluginMetadata
 import com.ivy.plugins.api.PluginPreferences
 import com.ivy.plugins.api.SnapshotSyncEngine
@@ -85,7 +86,7 @@ class GoogleDrivePlugin @Inject constructor(
     }
 
     companion object {
-        const val ID = "google-drive"
+        val ID = PluginId("google-drive")
         const val KEY_CONNECTED = "connected"
         const val KEY_ACCOUNT_EMAIL = "account_email"
     }

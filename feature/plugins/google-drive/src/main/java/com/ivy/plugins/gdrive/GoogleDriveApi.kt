@@ -98,7 +98,7 @@ class GoogleDriveApi @Inject constructor(
     suspend fun userEmail(token: String): String? = httpClient.get("$DRIVE_URL/about") {
         bearerAuth(token)
         parameter("fields", "user(emailAddress)")
-    }.orThrow().body<DriveAbout>().user?.emailAddress
+    }.orThrow().body<DriveAbout>().user.emailAddress
 
     suspend fun revoke(token: String) {
         httpClient.post("https://oauth2.googleapis.com/revoke") {
@@ -135,15 +135,15 @@ data class DriveFile(
     @SerialName("id")
     val id: String,
     @SerialName("version")
-    val version: String? = null,
+    val version: String,
     @SerialName("modifiedTime")
-    val modifiedTime: String? = null,
+    val modifiedTime: String,
 )
 
 @Serializable
 private data class DriveFileList(
     @SerialName("files")
-    val files: List<DriveFile> = emptyList(),
+    val files: List<DriveFile>,
 )
 
 @Serializable
@@ -157,11 +157,11 @@ private data class DriveFileMetadata(
 @Serializable
 private data class DriveAbout(
     @SerialName("user")
-    val user: DriveUser? = null,
+    val user: DriveUser,
 )
 
 @Serializable
 private data class DriveUser(
     @SerialName("emailAddress")
-    val emailAddress: String? = null,
+    val emailAddress: String,
 )

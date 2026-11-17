@@ -86,7 +86,7 @@ private fun ConnectedContent(
     uiState: GoogleDriveUiState,
     onEvent: (GoogleDriveUiEvent) -> Unit,
     modifier: Modifier = Modifier,
-) = Column(
+): Unit = Column(
     modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(8.dp),
 ) {

@@ -1,6 +1,7 @@
 package com.ivy.plugins
 
 import com.ivy.plugins.api.IvyPlugin
+import com.ivy.plugins.api.PluginId
 import com.ivy.plugins.api.PluginPreferences
 import com.ivy.plugins.api.SyncPlugin
 import com.ivy.plugins.api.SyncResult
@@ -17,13 +18,13 @@ class PluginManager @Inject constructor(
 ) {
     val plugins: List<IvyPlugin> = plugins.sortedBy { it.metadata.name }
 
-    fun enabledFlow(pluginId: String): Flow<Boolean> =
+    fun enabledFlow(pluginId: PluginId): Flow<Boolean> =
         preferences.booleanFlow(pluginId, KEY_ENABLED, default = false)
 
-    suspend fun isEnabled(pluginId: String): Boolean =
+    suspend fun isEnabled(pluginId: PluginId): Boolean =
         preferences.getBoolean(pluginId, KEY_ENABLED, default = false)
 
-    suspend fun setEnabled(pluginId: String, enabled: Boolean) {
+    suspend fun setEnabled(pluginId: PluginId, enabled: Boolean) {
         val plugin = plugins.find { it.metadata.id == pluginId } ?: return
         preferences.setBoolean(pluginId, KEY_ENABLED, enabled)
         if (enabled) plugin.onEnabled() else plugin.onDisabled()
@@ -35,7 +36,7 @@ class PluginManager @Inject constructor(
         .filter { isEnabled(it.metadata.id) }
 
     /** Runs every enabled and connected sync plugin. */
-    suspend fun syncAll(): Map<String, SyncResult> = enabledSyncPlugins()
+    suspend fun syncAll(): Map<PluginId, SyncResult> = enabledSyncPlugins()
         .filter { it.isConnected() }
         .associate { it.metadata.id to it.sync() }
 

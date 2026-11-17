@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewModelScope
 import com.ivy.plugins.api.IvyPlugin
+import com.ivy.plugins.api.PluginId
 import com.ivy.plugins.api.PluginMetadata
 import com.ivy.ui.ComposeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ data class PluginItemViewState(
 )
 
 sealed interface PluginsUiEvent {
-    data class TogglePlugin(val pluginId: String) : PluginsUiEvent
+    data class TogglePlugin(val pluginId: PluginId) : PluginsUiEvent
 }
 
 @Stable

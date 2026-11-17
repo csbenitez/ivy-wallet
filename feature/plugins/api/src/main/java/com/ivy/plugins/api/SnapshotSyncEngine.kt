@@ -27,11 +27,14 @@ interface RemoteSnapshotStore {
     suspend fun upload(content: String, existing: RemoteSnapshot?): RemoteSnapshot
 }
 
+@JvmInline
+value class RemoteSnapshotId(val value: String)
+
 /**
  * @param revision changes every time the remote snapshot changes.
  */
 data class RemoteSnapshot(
-    val id: String,
+    val id: RemoteSnapshotId,
     val revision: String,
 )
 
@@ -58,7 +61,7 @@ class SnapshotSyncEngine @Inject constructor(
 
     @Suppress("TooGenericExceptionCaught")
     suspend fun sync(
-        pluginId: String,
+        pluginId: PluginId,
         store: RemoteSnapshotStore,
         mode: SyncMode,
     ): SyncResult = mutex.withLock {
@@ -83,7 +86,7 @@ class SnapshotSyncEngine @Inject constructor(
         }
     }
 
-    private suspend fun twoWay(pluginId: String, store: RemoteSnapshotStore): SyncResult {
+    private suspend fun twoWay(pluginId: PluginId, store: RemoteSnapshotStore): SyncResult {
         val remote = store.current()
         val lastSeenRevision = preferences.getString(pluginId, KEY_LAST_REVISION)
         val pulled = if (remote != null && remote.revision != lastSeenRevision) {
@@ -97,7 +100,7 @@ class SnapshotSyncEngine @Inject constructor(
     }
 
     private suspend fun push(
-        pluginId: String,
+        pluginId: PluginId,
         store: RemoteSnapshotStore,
         existing: RemoteSnapshot?,
     ): SyncResult {
@@ -106,7 +109,7 @@ class SnapshotSyncEngine @Inject constructor(
         return SyncResult.Success(pulledRemoteChanges = false, pushedLocalChanges = true)
     }
 
-    private suspend fun pull(pluginId: String, store: RemoteSnapshotStore): SyncResult {
+    private suspend fun pull(pluginId: PluginId, store: RemoteSnapshotStore): SyncResult {
         val remote = store.current() ?: return SyncResult.NothingToRestore
         merge(store.download(remote))
         preferences.setString(pluginId, KEY_LAST_REVISION, remote.revision)
@@ -122,7 +125,7 @@ class SnapshotSyncEngine @Inject constructor(
     }
 
     /** Forgets what this device knows about the remote copy (e.g. on disconnect). */
-    suspend fun reset(pluginId: String) {
+    suspend fun reset(pluginId: PluginId) {
         preferences.setString(pluginId, KEY_LAST_REVISION, null)
         preferences.setString(pluginId, KEY_LAST_ERROR, null)
         preferences.setLong(pluginId, KEY_LAST_SYNC_AT, null)

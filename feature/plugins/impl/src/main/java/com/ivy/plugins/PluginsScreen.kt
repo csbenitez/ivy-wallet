@@ -84,7 +84,7 @@ private fun PluginsUi(
                         )
                     }
                 }
-                items(uiState.plugins, key = { it.metadata.id }) { item ->
+                items(uiState.plugins, key = { it.metadata.id.value }) { item ->
                     PluginCard(
                         item = item,
                         onToggle = { onEvent(PluginsUiEvent.TogglePlugin(item.metadata.id)) }

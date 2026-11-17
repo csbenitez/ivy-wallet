@@ -34,10 +34,13 @@ interface IvyPlugin {
     suspend fun onDisabled() {}
 }
 
+/** Stable, unique plugin id. Used as a storage key, so never change it once released. */
+@JvmInline
+value class PluginId(val value: String)
+
 @Immutable
 data class PluginMetadata(
-    /** Stable, unique id. Used as a storage key, so never change it once released. */
-    val id: String,
+    val id: PluginId,
     val name: String,
     val description: String,
     val author: String,
