@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="plugins_title">Plugins</string>
+    <string name="plugins_intro">Plugins add optional features to Ivy Wallet. They are off by default: turn on the ones you want and configure them below.</string>
+    <string name="plugins_empty">No plugins available.</string>
+    <string name="plugins_version_author">v%1$s · %2$s</string>
+    <string name="plugins_category_sync">Sync</string>
+    <string name="plugins_category_import">Import</string>
+    <string name="plugins_category_other">Other</string>
+</resources>

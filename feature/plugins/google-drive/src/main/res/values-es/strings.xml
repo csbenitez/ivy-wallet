@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="gdrive_plugin_description">Respalda y sincroniza tu billetera con Google Drive, para que todos tus dispositivos tengan los mismos datos.</string>
+    <string name="gdrive_not_connected">Conecta tu cuenta de Google para empezar a sincronizar. Ivy Wallet solo accede a su propia carpeta oculta en tu Drive, no a tus archivos.</string>
+    <string name="gdrive_connect">Conectar Google Drive</string>
+    <string name="gdrive_connected_as">Conectado como %1$s</string>
+    <string name="gdrive_connected">Conectado a Google Drive</string>
+    <string name="gdrive_disconnect">Desconectar</string>
+    <string name="gdrive_sync_now">Sincronizar ahora</string>
+    <string name="gdrive_backup_now">Solo subir</string>
+    <string name="gdrive_restore">Restaurar desde Drive</string>
+    <string name="gdrive_last_sync">Última sincronización: %1$s</string>
+    <string name="gdrive_never_synced">Aún no se ha sincronizado</string>
+    <string name="gdrive_last_error">Último error: %1$s</string>
+    <string name="gdrive_auto_sync_hint">Mientras el plugin esté activo, Ivy Wallet sincroniza automáticamente cada pocas horas cuando tengas conexión.</string>
+    <string name="gdrive_sync_done">Sincronización completada</string>
+    <string name="gdrive_backup_done">Datos subidos a Drive</string>
+    <string name="gdrive_restore_done">Datos restaurados desde Drive</string>
+    <string name="gdrive_nothing_to_restore">Todavía no hay una copia en Drive</string>
+    <string name="gdrive_needs_reconnect">El acceso a Google caducó. Vuelve a conectar.</string>
+    <string name="gdrive_connect_failed">No se pudo conectar: %1$s</string>
+    <string name="gdrive_sync_failed">Falló la sincronización: %1$s</string>
+</resources>

@@ -53,6 +53,7 @@ import com.ivy.navigation.ExchangeRatesScreen
 import com.ivy.navigation.FeaturesScreen
 import com.ivy.navigation.ImportScreen
 import com.ivy.navigation.Navigation
+import com.ivy.navigation.PluginsScreen
 import com.ivy.navigation.ReleasesScreen
 import com.ivy.navigation.navigation
 import com.ivy.navigation.screenScopedViewModel
@@ -324,6 +325,15 @@ private fun BoxWithConstraintsScope.UI(
                 text = stringResource(R.string.exchange_rates),
             ) {
                 nav.navigateTo(ExchangeRatesScreen)
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            SettingsDefaultButton(
+                icon = R.drawable.ic_custom_atom_m,
+                text = "Plugins",
+            ) {
+                nav.navigateTo(PluginsScreen)
             }
 
             Spacer(Modifier.height(12.dp))
