@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
  * Google Picker settings. With the `drive.file` scope, a spreadsheet picked here becomes
  * accessible to the app's OAuth client in the same Google Cloud project ([appId]).
  */
-data class GooglePickerConfig(
+class GooglePickerConfig(
     /** Browser API key restricted to the Google Picker API. */
     val apiKey: String,
     /** The Google Cloud project *number* (not id) that owns the Android OAuth client. */
