@@ -2,6 +2,7 @@ package com.ivy.googlesheets.ui
 
 import android.app.Activity
 import android.text.format.DateUtils
+import androidx.annotation.StringRes
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -213,7 +214,7 @@ private fun LazyListScope.mapping(state: GoogleSheetsState, onEvent: (GoogleShee
 
     item {
         if (state.missingFields.isNotEmpty()) {
-            val names = state.missingFields.map { fieldLabel(it) }.joinToString()
+            val names = state.missingFields.map { stringResource(fieldLabelRes(it)) }.joinToString()
             Text(
                 text = stringResource(R.string.gs_missing_fields, names),
                 color = MaterialTheme.colorScheme.error,
@@ -302,7 +303,7 @@ private fun FieldRow(
     required: Boolean,
 ) {
     val column = state.mapping.columnOf(field)
-    val label = fieldLabel(field) + if (required) " (${stringResource(R.string.gs_required)})" else ""
+    val label = stringResource(fieldLabelRes(field)) + if (required) " (${stringResource(R.string.gs_required)})" else ""
     Column {
         Dropdown(
             label = label,
@@ -460,21 +461,19 @@ private fun ErrorCard(error: SheetsError, onDismiss: () -> Unit) {
     }
 }
 
-@Composable
-private fun fieldLabel(field: SheetMapping.Field): String = stringResource(
-    when (field) {
-        SheetMapping.Field.DATE -> R.string.gs_field_date
-        SheetMapping.Field.AMOUNT -> R.string.gs_field_amount
-        SheetMapping.Field.TYPE -> R.string.gs_field_type
-        SheetMapping.Field.ACCOUNT -> R.string.gs_field_account
-        SheetMapping.Field.CURRENCY -> R.string.gs_field_currency
-        SheetMapping.Field.CATEGORY -> R.string.gs_field_category
-        SheetMapping.Field.TITLE -> R.string.gs_field_title
-        SheetMapping.Field.DESCRIPTION -> R.string.gs_field_description
-        SheetMapping.Field.TO_ACCOUNT -> R.string.gs_field_to_account
-        SheetMapping.Field.TO_AMOUNT -> R.string.gs_field_to_amount
-    }
-)
+@StringRes
+private fun fieldLabelRes(field: SheetMapping.Field): Int = when (field) {
+    SheetMapping.Field.DATE -> R.string.gs_field_date
+    SheetMapping.Field.AMOUNT -> R.string.gs_field_amount
+    SheetMapping.Field.TYPE -> R.string.gs_field_type
+    SheetMapping.Field.ACCOUNT -> R.string.gs_field_account
+    SheetMapping.Field.CURRENCY -> R.string.gs_field_currency
+    SheetMapping.Field.CATEGORY -> R.string.gs_field_category
+    SheetMapping.Field.TITLE -> R.string.gs_field_title
+    SheetMapping.Field.DESCRIPTION -> R.string.gs_field_description
+    SheetMapping.Field.TO_ACCOUNT -> R.string.gs_field_to_account
+    SheetMapping.Field.TO_AMOUNT -> R.string.gs_field_to_amount
+}
 
 private const val SamplesShown = 3
 private const val MaxFailedRowsShown = 10
