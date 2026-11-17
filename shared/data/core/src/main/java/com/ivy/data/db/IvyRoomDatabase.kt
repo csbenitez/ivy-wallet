@@ -139,12 +139,15 @@ abstract class IvyRoomDatabase : RoomDatabase() {
         )
 
         @Suppress("SpreadOperator")
-        fun create(applicationContext: Context): IvyRoomDatabase {
+        fun create(
+            applicationContext: Context,
+            dbName: String = DB_NAME,
+        ): IvyRoomDatabase {
             return Room
                 .databaseBuilder(
                     applicationContext,
                     IvyRoomDatabase::class.java,
-                    DB_NAME
+                    dbName
                 )
                 .addMigrations(*migrations())
                 .build()
