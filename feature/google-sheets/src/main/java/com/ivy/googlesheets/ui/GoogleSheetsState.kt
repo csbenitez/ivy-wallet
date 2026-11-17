@@ -58,7 +58,7 @@ enum class SheetsError {
 
 sealed interface GoogleSheetsEvent {
     data object OpenPicker : GoogleSheetsEvent
-    data class SheetPicked(val spreadsheetId: SpreadsheetId, val name: String) : GoogleSheetsEvent
+    data class SheetPicked(val spreadsheet: SpreadsheetId, val name: String) : GoogleSheetsEvent
     data object PickerCancelled : GoogleSheetsEvent
     data class PickerFailed(val message: String) : GoogleSheetsEvent
     data class TabSelected(val tab: String) : GoogleSheetsEvent

@@ -68,7 +68,7 @@ class GoogleSheetsViewModel @Inject constructor(
             GoogleSheetsEvent.OpenPicker -> openPicker()
             is GoogleSheetsEvent.SheetPicked -> {
                 state = state.copy(pickerHtml = null, spreadsheetTitle = event.name)
-                spreadsheetId = event.spreadsheetId.value
+                spreadsheetId = event.spreadsheet.value
                 loadPreview(tab = null)
             }
 
