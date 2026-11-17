@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="gdrive_plugin_description">Back up and sync your wallet with Google Drive, so all your devices share the same data.</string>
+    <string name="gdrive_not_connected">Connect your Google account to start syncing. Ivy Wallet only gets access to its own hidden folder in your Drive, not to your files.</string>
+    <string name="gdrive_connect">Connect Google Drive</string>
+    <string name="gdrive_connected_as">Connected as %1$s</string>
+    <string name="gdrive_connected">Connected to Google Drive</string>
+    <string name="gdrive_disconnect">Disconnect</string>
+    <string name="gdrive_sync_now">Sync now</string>
+    <string name="gdrive_backup_now">Upload only</string>
+    <string name="gdrive_restore">Restore from Drive</string>
+    <string name="gdrive_last_sync">Last sync: %1$s</string>
+    <string name="gdrive_never_synced">Not synced yet</string>
+    <string name="gdrive_last_error">Last error: %1$s</string>
+    <string name="gdrive_auto_sync_hint">While the plugin is on, Ivy Wallet syncs automatically every few hours when you\'re online.</string>
+    <string name="gdrive_sync_done">Sync complete</string>
+    <string name="gdrive_backup_done">Data uploaded to Drive</string>
+    <string name="gdrive_restore_done">Data restored from Drive</string>
+    <string name="gdrive_nothing_to_restore">There\'s no copy in Drive yet</string>
+    <string name="gdrive_needs_reconnect">Google access expired. Connect again.</string>
+    <string name="gdrive_connect_failed">Couldn\'t connect: %1$s</string>
+    <string name="gdrive_sync_failed">Sync failed: %1$s</string>
+</resources>
