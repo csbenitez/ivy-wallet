@@ -51,6 +51,7 @@ import com.ivy.navigation.AttributionsScreen
 import com.ivy.navigation.ContributorsScreen
 import com.ivy.navigation.ExchangeRatesScreen
 import com.ivy.navigation.FeaturesScreen
+import com.ivy.navigation.GoogleSheetsScreen
 import com.ivy.navigation.ImportScreen
 import com.ivy.navigation.Navigation
 import com.ivy.navigation.PluginsScreen
@@ -270,6 +271,17 @@ private fun BoxWithConstraintsScope.UI(
                         launchedFromOnboarding = false
                     )
                 )
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            SettingsDefaultButton(
+                icon = R.drawable.ic_export_csv,
+                text = stringResource(R.string.google_sheets_sync),
+                iconPadding = 6.dp,
+                description = stringResource(R.string.google_sheets_sync_description)
+            ) {
+                nav.navigateTo(GoogleSheetsScreen)
             }
         }
 

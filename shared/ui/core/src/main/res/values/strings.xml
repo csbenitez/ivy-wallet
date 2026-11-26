@@ -241,6 +241,8 @@
     <string name="import_export"><![CDATA[Import & Export]]></string>
     <string name="backup_data">Backup data</string>
     <string name="import_data">Import data</string>
+    <string name="google_sheets_sync">Google Sheets sync</string>
+    <string name="google_sheets_sync_description">Import and sync your budget sheet</string>
     <string name="app_settings">App Settings</string>
     <string name="lock_app">Lock App</string>
     <string name="show_notifications">Show notifications</string>
