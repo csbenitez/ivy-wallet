@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sw_title">Workspaces y compartir</string>
+    <string name="sw_intro">Cada workspace es un presupuesto separado con sus propias cuentas, categorías y transacciones (p. ej. \"Presupuesto mensual\", \"Vacaciones familiares\"). Comparte un workspace con todas las personas que quieras: todos lo mantienen sincronizado mediante un archivo en Google Drive (o cualquier almacenamiento en la nube de tu teléfono).</string>
+    <string name="sw_how_to">Para compartir: toca Compartir y guarda el archivo en una carpeta de Google Drive. Comparte esa carpeta con los demás miembros desde Google Drive. Cada uno toca \"Unirme a un workspace compartido\" y elige el mismo archivo.</string>
+    <string name="sw_active">Activo</string>
+    <string name="sw_open">Abrir</string>
+    <string name="sw_share">Compartir</string>
+    <string name="sw_sync_now">Sincronizar</string>
+    <string name="sw_stop_sharing">Dejar de compartir</string>
+    <string name="sw_rename">Renombrar</string>
+    <string name="sw_delete">Eliminar</string>
+    <string name="sw_cancel">Cancelar</string>
+    <string name="sw_ok">Aceptar</string>
+    <string name="sw_create">Crear</string>
+    <string name="sw_continue">Continuar</string>
+    <string name="sw_new_workspace">Nuevo workspace</string>
+    <string name="sw_join">Unirme a un workspace compartido</string>
+    <string name="sw_workspace_name">Nombre del workspace</string>
+    <string name="sw_member_name_title">Tu nombre</string>
+    <string name="sw_member_name_hint">Cómo te verán los demás miembros</string>
+    <string name="sw_not_shared">Solo en este teléfono</string>
+    <string name="sw_shared_in">Compartido · %1$s</string>
+    <string name="sw_members">Miembros: %1$s</string>
+    <string name="sw_last_sync">Última sincronización: %1$s</string>
+    <string name="sw_never_synced">Aún sin sincronizar</string>
+    <string name="sw_sync_error">Error al sincronizar: %1$s</string>
+    <string name="sw_switch_title">¿Abrir \"%1$s\"?</string>
+    <string name="sw_switch_text">Ivy Wallet se reiniciará para abrir este workspace.</string>
+    <string name="sw_delete_title">¿Eliminar \"%1$s\"?</string>
+    <string name="sw_delete_text">Se borrarán todos sus datos de este teléfono. Los demás miembros conservan su copia.</string>
+    <string name="sw_stop_title">¿Dejar de compartir \"%1$s\"?</string>
+    <string name="sw_stop_text">Los datos se quedan en este teléfono pero ya no se sincronizarán.</string>
+    <string name="sw_synced">Sincronizado: %1$d recibidos, %2$d eliminados, %3$d enviados</string>
+    <string name="sw_shared_ok">Workspace compartido. Ahora comparte la carpeta del archivo con los demás miembros en Google Drive.</string>
+    <string name="sw_joined_title">Te uniste a \"%1$s\"</string>
+    <string name="sw_joined_text">¿Abrirlo ahora? Ivy Wallet se reiniciará.</string>
+    <string name="sw_error_invalid">Ese archivo no es un workspace compartido de Ivy Wallet.</string>
+    <string name="sw_error_wrong">Ese archivo pertenece a otro workspace compartido.</string>
+    <string name="sw_error_already">Ese archivo ya tiene un workspace compartido. Usa \"Unirme a un workspace compartido\".</string>
+    <string name="sw_error_version">Este workspace se creó con una versión más nueva. Actualiza Ivy Wallet.</string>
+    <string name="sw_error_generic">Algo salió mal: %1$s</string>
+</resources>

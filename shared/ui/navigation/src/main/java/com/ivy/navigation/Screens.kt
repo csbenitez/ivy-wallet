@@ -136,6 +136,7 @@ data object ExchangeRatesScreen : Screen {
 
 data object FeaturesScreen : Screen
 
+data object SharedWalletScreen : Screen
 data object PluginsScreen : Screen
 
 data object AttributionsScreen : Screen
